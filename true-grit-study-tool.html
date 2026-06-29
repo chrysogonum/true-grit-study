@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>True Grit (Portis, 1968) — A Comprehension &amp; Close-Reading Tool</title>
+<style>
+  :root{
+    --ink:#241a12;
+    --ink-soft:#4a3b2c;
+    --parchment:#f4ead6;
+    --parchment-2:#efe1c6;
+    --card:#fbf4e4;
+    --rule:#cbb38a;
+    --accent:#7c2d12;       /* oxblood */
+    --accent-2:#9a6a2f;     /* brass */
+    --good:#2f6f43;
+    --bad:#9a2a2a;
+    --shadow:rgba(60,40,20,.18);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:"Iowan Old Style","Palatino Linotype","Book Antiqua",Georgia,serif;
+    color:var(--ink);
+    background:
+      radial-gradient(circle at 20% -10%, #fff8ec 0, transparent 60%),
+      var(--parchment);
+    line-height:1.6;
+  }
+  header.masthead{
+    text-align:center;
+    padding:34px 18px 18px;
+    border-bottom:3px double var(--rule);
+    background:linear-gradient(#f7eed9,#efe1c6);
+  }
+  .kicker{
+    letter-spacing:.32em;
+    text-transform:uppercase;
+    font-size:.72rem;
+    color:var(--accent-2);
+    margin:0 0 6px;
+  }
+  h1.title{
+    margin:0;
+    font-size:clamp(2rem,5vw,3.3rem);
+    font-weight:800;
+    letter-spacing:.01em;
+    color:var(--ink);
+    line-height:1.05;
+  }
+  .subtitle{
+    margin:8px 0 0;
+    font-style:italic;
+    color:var(--ink-soft);
+    font-size:1.02rem;
+  }
+  .epigraph{
+    max-width:760px;
+    margin:18px auto 4px;
+    font-style:italic;
+    color:var(--ink-soft);
+    font-size:.96rem;
+  }
+  .epigraph cite{display:block;font-style:normal;font-size:.8rem;letter-spacing:.04em;color:var(--accent-2);margin-top:4px}
+
+  nav.tabs{
+    position:sticky;top:0;z-index:20;
+    display:flex;flex-wrap:wrap;gap:2px;justify-content:center;
+    background:var(--ink);
+    padding:6px;
+    box-shadow:0 4px 14px var(--shadow);
+  }
+  nav.tabs button{
+    appearance:none;border:0;cursor:pointer;
+    background:transparent;color:#e8d6b4;
+    font-family:inherit;font-size:.92rem;letter-spacing:.05em;
+    padding:9px 15px;border-radius:5px;transition:.18s;
+  }
+  nav.tabs button:hover{background:#3a2a1c;color:#fff}
+  nav.tabs button.active{background:var(--accent);color:#fff;font-weight:700}
+
+  main{max-width:980px;margin:0 auto;padding:26px 18px 90px}
+  section.panel{display:none;animation:fade .35s ease}
+  section.panel.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  h2.section-h{
+    font-size:1.7rem;margin:.2em 0 .1em;color:var(--accent);
+    border-bottom:2px solid var(--rule);padding-bottom:.25em;
+  }
+  h3{font-size:1.2rem;color:var(--ink);margin:1.4em 0 .3em}
+  p.lead{font-size:1.06rem;color:var(--ink-soft)}
+
+  .card{
+    background:var(--card);border:1px solid var(--rule);
+    border-radius:10px;padding:18px 20px;margin:16px 0;
+    box-shadow:0 2px 8px var(--shadow);
+  }
+  .grid{display:grid;gap:14px}
+  @media(min-width:680px){.grid.two{grid-template-columns:1fr 1fr}}
+
+  details.movement{
+    background:var(--card);border:1px solid var(--rule);
+    border-radius:8px;margin:10px 0;overflow:hidden;
+  }
+  details.movement>summary{
+    cursor:pointer;padding:13px 16px;font-weight:700;font-size:1.05rem;
+    list-style:none;display:flex;align-items:center;gap:10px;
+    background:var(--parchment-2);
+  }
+  details.movement>summary::-webkit-details-marker{display:none}
+  details.movement>summary::before{
+    content:"§";color:var(--accent);font-weight:800;font-size:1.15rem;
+    width:1.3em;text-align:center;
+  }
+  details.movement[open]>summary{border-bottom:1px solid var(--rule)}
+  details.movement .body{padding:6px 18px 16px}
+  .tag{display:inline-block;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;
+       background:var(--accent-2);color:#fff;border-radius:20px;padding:2px 9px;margin-left:auto}
+  .reading{font-size:.86rem;color:var(--accent-2);font-style:italic;margin-top:8px}
+
+  /* character cards */
+  .char{display:flex;flex-direction:column;gap:6px}
+  .char .name{font-size:1.18rem;font-weight:800;color:var(--accent)}
+  .char .role{font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;color:var(--accent-2)}
+  .char ul{margin:.3em 0 0;padding-left:1.1em}
+  .char li{margin:.2em 0}
+  .relmap{font-size:.92rem}
+  .relmap td{padding:6px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+  .relmap td:first-child{font-weight:700;white-space:nowrap;color:var(--ink)}
+
+  /* quotes */
+  blockquote.q{
+    margin:14px 0;padding:14px 18px;border-left:4px solid var(--accent);
+    background:var(--card);border-radius:0 8px 8px 0;font-style:italic;font-size:1.05rem;
+  }
+  blockquote.q .gloss{display:block;margin-top:8px;font-style:normal;font-size:.9rem;color:var(--ink-soft)}
+  blockquote.q .who{display:block;margin-top:6px;font-style:normal;font-size:.78rem;letter-spacing:.05em;color:var(--accent-2)}
+
+  /* vocab */
+  table.vocab{width:100%;border-collapse:collapse;font-size:.95rem}
+  table.vocab th{text-align:left;background:var(--parchment-2);padding:8px 10px;border-bottom:2px solid var(--rule)}
+  table.vocab td{padding:8px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+  table.vocab tr:hover td{background:#fff8e9}
+  .vocab .term{font-weight:700;white-space:nowrap}
+
+  /* quiz */
+  .quizbar{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+  .quizbar button{
+    font-family:inherit;cursor:pointer;border:1px solid var(--rule);
+    background:var(--card);color:var(--ink);padding:8px 14px;border-radius:20px;font-size:.9rem;transition:.15s;
+  }
+  .quizbar button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .qitem{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:16px 18px;margin:14px 0}
+  .qitem .qnum{font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-2)}
+  .qitem .qtext{font-weight:700;font-size:1.06rem;margin:4px 0 10px}
+  .opts{display:flex;flex-direction:column;gap:8px}
+  .opt{
+    display:flex;gap:10px;align-items:flex-start;cursor:pointer;
+    border:1px solid var(--rule);border-radius:8px;padding:9px 12px;background:#fffdf6;transition:.12s;
+  }
+  .opt:hover{border-color:var(--accent-2);background:#fff8e9}
+  .opt input{margin-top:5px}
+  .opt.correct{background:#e7f3e8;border-color:var(--good)}
+  .opt.incorrect{background:#f6e4e2;border-color:var(--bad)}
+  .opt .letter{font-weight:800;color:var(--accent-2)}
+  .explain{margin-top:10px;font-size:.92rem;padding:10px 12px;border-radius:8px;display:none;background:#f3ecda;border:1px dashed var(--rule)}
+  .explain.show{display:block}
+  .explain b{color:var(--accent)}
+  .quizactions{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+  .btn{
+    font-family:inherit;cursor:pointer;border:0;border-radius:8px;padding:11px 22px;font-size:1rem;font-weight:700;transition:.15s;
+  }
+  .btn.primary{background:var(--accent);color:#fff}
+  .btn.primary:hover{background:#641f0c}
+  .btn.ghost{background:transparent;border:1px solid var(--rule);color:var(--ink)}
+  .scorebox{
+    display:none;margin:16px 0;padding:18px;border-radius:10px;text-align:center;
+    background:linear-gradient(#fbf4e4,#efe1c6);border:2px solid var(--rule);
+  }
+  .scorebox.show{display:block}
+  .scorebox .big{font-size:2.4rem;font-weight:800;color:var(--accent)}
+  .scorebox .grit{font-style:italic;color:var(--ink-soft);margin-top:4px}
+
+  footer{text-align:center;font-size:.8rem;color:var(--ink-soft);padding:24px 18px 50px;border-top:1px solid var(--rule)}
+  .note{font-size:.86rem;color:var(--ink-soft);background:#f3ecda;border:1px dashed var(--rule);border-radius:8px;padding:10px 14px;margin:14px 0}
+  a{color:var(--accent)}
+</style>
+</head>
+<body>
+<header class="masthead">
+  <p class="kicker">A Close-Reading &amp; Comprehension Tool</p>
+  <h1 class="title">TRUE&nbsp;GRIT</h1>
+  <p class="subtitle">Charles Portis · 1968 · narrated by Mattie Ross of near Dardanelle in Yell County</p>
+  <p class="epigraph">"People do not give it credence that a fourteen-year-old girl could leave home and go off in the wintertime to avenge her father's blood but it did not seem so strange then, although I will say it did not happen every day."
+    <cite>— the novel's opening sentence</cite></p>
+</header>
+
+<nav class="tabs" id="tabs">
+  <button data-tab="overview" class="active">Overview</button>
+  <button data-tab="plot">Plot Walkthrough</button>
+  <button data-tab="characters">Characters</button>
+  <button data-tab="themes">Themes &amp; Quotes</button>
+  <button data-tab="vocab">Vocabulary &amp; Context</button>
+  <button data-tab="quiz">Self-Test</button>
+</nav>
+
+<main>
+
+<!-- ================= OVERVIEW ================= -->
+<section class="panel active" id="overview">
+  <h2 class="section-h">Orientation</h2>
+  <p class="lead">A short novel with a long reach. On its surface a frontier revenge tale; underneath, a study in voice, retributive justice, and the gap between how Mattie tells her story and what the story actually shows. Use this panel to fix the essentials before close reading.</p>
+
+  <div class="grid two">
+    <div class="card">
+      <h3>The premise in one breath</h3>
+      <p>In late 1870s Arkansas, Mattie Ross's father is murdered and robbed by his hired hand Tom Chaney, who flees into the Indian Territory. Fourteen, devout, and relentless, Mattie hires the dissolute one-eyed deputy U.S. marshal <b>Rooster Cogburn</b> — a man with "true grit" — and rides after Chaney herself, with a glory-seeking Texas Ranger, <b>LaBoeuf</b>, in tow.</p>
+    </div>
+    <div class="card">
+      <h3>The frame you must not forget</h3>
+      <p>The entire book is narrated decades later by an <b>elderly, one-armed, unmarried Mattie</b>. Every judgment, scripture citation, and dry aside is the voice of the old woman, not the girl. The retrospective frame is the novel's central literary device — keep asking what the narrator emphasizes, omits, and refuses to feel.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Why it rewards a college reader</h3>
+    <ul>
+      <li><b>Unreliable-by-temperament narration.</b> Mattie is factually scrupulous yet emotionally and morally self-certain. Irony lives in the distance between her plain reporting and the reader's response.</li>
+      <li><b>Calvinist substructure.</b> Her Cumberland Presbyterian belief in predestination and "paying for everything" organizes the plot's economy of debts, contracts, and blood.</li>
+      <li><b>Deadpan comic register.</b> Portis fuses violence with comedy through diction — legalistic, biblical, formal — that almost never breaks.</li>
+      <li><b>Revisionist Western.</b> Written in 1968, it both honors and quietly dismantles frontier myth: heroism is shabby, drunk, transactional, and costs Mattie her arm.</li>
+    </ul>
+  </div>
+
+  <div class="note"><b>A note on structure &amp; accuracy:</b> Portis's novel runs as a continuous first-person narrative without numbered or titled chapters. The "movements" in the Plot Walkthrough are this tool's pedagogical divisions of the action, not Portis's own headings. Plot points and quotations are drawn from the 1968 text; where a detail is summarized rather than quoted it is paraphrased faithfully.</p></div>
+
+  <div class="card">
+    <h3>How to use this tool</h3>
+    <p>Move left to right: read the <b>Plot Walkthrough</b> to lock the sequence of events, study the <b>Characters</b> and their conflicting motives, work the <b>Themes &amp; Quotes</b> for analysis, drill <b>Vocabulary &amp; Context</b> for the period diction, then prove comprehension in the <b>Self-Test</b>. The three quiz banks grade instantly and explain every answer.</p>
+  </div>
+</section>
+
+<!-- ================= PLOT ================= -->
+<section class="panel" id="plot">
+  <h2 class="section-h">Plot Walkthrough</h2>
+  <p class="lead">Eight movements, in order. Open each for the events that matter and a close-reading prompt. Track three threads as you go: <i>Mattie's vengeance</i>, <i>the money/contracts</i>, and <i>what the narration leaves unsaid</i>.</p>
+
+  <details class="movement">
+    <summary>1 · The murder &amp; the journey to Fort Smith <span class="tag">Inciting</span></summary>
+    <div class="body">
+      <p>Frank Ross is shot dead in Fort Smith by his hired hand <b>Tom Chaney</b> after a night of drinking and gambling; Chaney robs the body of two California gold pieces and a horse and flees across the Arkansas River into the Indian Territory, joining the outlaw <b>Lucky Ned Pepper</b>. Mattie travels to Fort Smith with the family hand <b>Yarnell Poindexter</b> to claim the body, then sends Yarnell home and stays to see justice done.</p>
+      <p>She witnesses a public triple hanging outside Judge Isaac Parker's court — two white men and a Native man (denied his last words) — establishing the law's grim machinery and the world's casual violence.</p>
+      <p class="reading">Close reading: Notice how flatly Mattie reports her father's corpse and the hangings. What does the absence of stated grief tell you about her, and about the narrating voice's discipline?</p>
+    </div>
+  </details>
+
+  <details class="movement">
+    <summary>2 · The horse-trade with Colonel Stonehill <span class="tag">Character</span></summary>
+    <div class="body">
+      <p>To fund the manhunt, Mattie out-negotiates the livestock trader <b>Colonel G. Stonehill</b> in the novel's celebrated bargaining duel. Invoking her family lawyer <b>J. Noble Daggett</b> as a weapon, she recovers money for the ponies her father bought, forces Stonehill to buy back the ponies, and reclaims her father's horse Judy — eventually acquiring her own pony, <b>Little Blackie</b>.</p>
+      <p class="reading">Close reading: This comic set-piece is pure plot economy and pure characterization. How does Mattie's mastery of contracts, threats, and law foreshadow how she'll treat revenge — as a debt to be collected?</p>
+    </div>
+  </details>
+
+  <details class="movement">
+    <summary>3 · Hiring Rooster &amp; the courtroom <span class="tag">Rising</span></summary>
+    <div class="body">
+      <p>Mattie seeks the marshal with the most "grit" and is pointed to <b>Reuben J. "Rooster" Cogburn</b> — one-eyed, fat, a heavy drinker, a former Confederate guerrilla. She watches him testify at the Wharton trial, where defense lawyer <b>Goudy</b> cross-examines him and exposes his violent body count and loose regard for the law. She hires Rooster for the job; meanwhile the Texas Ranger <b>LaBoeuf</b> (pronounced "LaBeef") appears, also hunting Chaney — for murdering a Texas state senator and his dog — intending to take him back to Texas for the reward.</p>
+      <p class="reading">Close reading: The courtroom scene is Portis's sly way of vetting Rooster's "grit." Is it courage, brutality, or both? Track how the word "grit" shifts meaning across the book.</p>
+    </div>
+  </details>
+
+  <details class="movement">
+    <summary>4 · Crossing into the Territory <span class="tag">Conflict</span></summary>
+    <div class="body">
+      <p>Rooster and LaBoeuf try to leave Mattie behind and strike a deal to split the chase and the reward, sidelining her vengeance. Mattie refuses to be left; she fords the river on Little Blackie and forces her way into the expedition. The uneasy trio is set: a girl who wants Chaney hanged in Arkansas, a Ranger who wants him alive for Texas money, and a marshal in the middle.</p>
+      <p class="reading">Close reading: The river crossing is Mattie's literal and figurative refusal of her assigned place. Read it against every adult who tells her to go home.</p>
+    </div>
+  </details>
+
+  <details class="movement">
+    <summary>5 · The dugout: Quincy &amp; Moon <span class="tag">Turn</span></summary>
+    <div class="body">
+      <p>At a remote dugout they capture two of Ned Pepper's young associates, <b>Quincy</b> and <b>Moon</b>. Under Rooster's interrogation Moon begins to talk; Quincy silences him by chopping at him with a bowie knife, and Rooster kills Quincy. The dying Moon reveals that Ned Pepper's gang is coming that night for fresh horses. The expedition lays an ambush.</p>
+      <p class="reading">Close reading: Violence here is sudden, intimate, and morally muddy. Note how the boys' deaths are reported without sentiment — and how the gang's arrival is set in motion by their betrayal.</p>
+    </div>
+  </details>
+
+  <details class="movement">
+    <summary>6 · The ambush goes wrong <span class="tag">Setback</span></summary>
+    <div class="body">
+      <p>The night ambush at the dugout misfires. Shots are exchanged, men fall, but <b>Ned Pepper escapes</b> with most of his gang — and Chaney is glimpsed among them. The trio has tipped its hand without taking its quarry, and must now pursue the gang deeper into the Territory toward a final confrontation.</p>
+      <p class="reading">Close reading: The hero's plan fails. How does Portis use anticlimax to deflate frontier-adventure expectations even as he keeps the suspense?</p>
+    </div>
+  </details>
+
+  <details class="movement">
+    <summary>7 · Mattie meets Chaney · the meadow charge <span class="tag">Climax</span></summary>
+    <div class="body">
+      <p>Alone at a creek to water the horses, Mattie comes face to face with <b>Tom Chaney</b>. She shoots him with her father's heavy Colt's dragoon revolver and wounds him, but the recoil knocks her down; Chaney seizes her and carries her to Ned Pepper. Ned, who keeps a rough code, leaves Mattie in Chaney's charge with orders not to harm her, then rides to face Rooster.</p>
+      <p>In the open meadow comes the book's iconic image: outnumbered, Rooster takes the reins in his teeth, a revolver in one hand and a rifle in the other, and <b>charges the four mounted outlaws</b> — answering Ned Pepper's taunt ("bold talk for a one-eyed fat man") with "Fill your hands, you son of a bitch!" Rooster's horse is shot from under him and pins him; as Ned Pepper closes to finish him, <b>LaBoeuf kills Ned with an extraordinary long shot</b> from his Sharps rifle.</p>
+      <p>Above the gang's position, Chaney turns on Mattie; LaBoeuf intervenes and is hurt, and Mattie finally <b>shoots Chaney dead</b> with the dragoon. The recoil hurls her backward — into a pit.</p>
+      <p class="reading">Close reading: Mattie gets her vengeance and is instantly punished by it. The recoil that throws her into the pit is almost too neat — read it as the novel's moral physics: "you must pay for everything."</p>
+    </div>
+  </details>
+
+  <details class="movement">
+    <summary>8 · The pit, the ride, and the long aftermath <span class="tag">Resolution &amp; Epilogue</span></summary>
+    <div class="body">
+      <p>Mattie falls into a cave pit holding a corpse, bats, and a rattlesnake; she breaks her arm in the fall and is <b>bitten by the snake</b>. Rooster descends, kills the snake, and hauls her out. He then rides <b>Little Blackie nearly to death</b> to reach a doctor — when the horse can go no further he shoots it — and commandeers a wagon to carry her on. Despite the rescue, the venom and delay cost Mattie her arm, which is <b>amputated below the elbow</b>.</p>
+      <p>The novel leaps forward roughly twenty-five years. The narrator is now an elderly, one-armed, never-married woman who runs a bank near Dardanelle. She learns Rooster has been touring with a Wild West show alongside outlaws-turned-performers <b>Cole Younger and Frank James</b>; she travels to see him but arrives to find he has <b>died three days earlier</b>. She has his body moved to her family plot. <b>LaBoeuf she never sees again.</b> The book closes on her famous, flat valediction about the passage of time.</p>
+      <p class="reading">Close reading: The epilogue reframes everything. The cost of "grit" is a lonely, hardened life. What has Mattie gained, what has she lost, and does she — or the novel — admit the difference? End on the closing lines: "This ends my true account… Time just gets away from us."</p>
+    </div>
+  </details>
+</section>
+
+<!-- ================= CHARACTERS ================= -->
+<section class="panel" id="characters">
+  <h2 class="section-h">Characters</h2>
+  <p class="lead">Read each profile for who they are and what they <i>want</i> — the wants are what collide. The three principals want incompatible things from the same dead man.</p>
+
+  <div class="grid two">
+    <div class="card char">
+      <span class="role">Narrator &amp; protagonist</span>
+      <span class="name">Mattie Ross</span>
+      <ul>
+        <li>Fourteen during the action; an elderly spinster while narrating.</li>
+        <li>Devout Cumberland Presbyterian; literal-minded, shrewd, fearless, self-righteous.</li>
+        <li>Thinks in contracts, debts, and scripture; treats vengeance as a just account to be settled.</li>
+        <li><b>Wants:</b> Chaney caught, tried, and hanged <i>in Arkansas, for her father</i> — not killed conveniently elsewhere.</li>
+      </ul>
+    </div>
+
+    <div class="card char">
+      <span class="role">Deputy U.S. Marshal</span>
+      <span class="name">Reuben J. "Rooster" Cogburn</span>
+      <ul>
+        <li>One-eyed, overweight, middle-aged, frequently drunk; rode with Confederate guerrillas in the war.</li>
+        <li>Ruthless and quick to kill, yet bound by a rough personal code; grows protective of Mattie.</li>
+        <li>Lives above Chen Lee's grocery; keeps a cat named General Sterling Price.</li>
+        <li><b>Wants:</b> at first the fee, then — increasingly — to see Mattie through alive. He is "grit" embodied: courage indistinguishable from brutality.</li>
+      </ul>
+    </div>
+
+    <div class="card char">
+      <span class="role">Texas Ranger</span>
+      <span class="name">LaBoeuf ("LaBeef")</span>
+      <ul>
+        <li>Vain, talkative, proud of the Ranger badge and his spurs; a genuinely fine marksman with a Sharps rifle.</li>
+        <li>Clashes with both Mattie and Rooster, but proves brave when it counts (the long shot that saves Rooster).</li>
+        <li><b>Wants:</b> Chaney taken <i>alive to Texas</i> for the reward on a murdered state senator — a motive directly at odds with Mattie's.</li>
+      </ul>
+    </div>
+
+    <div class="card char">
+      <span class="role">Antagonist</span>
+      <span class="name">Tom Chaney</span>
+      <ul>
+        <li>Frank Ross's hired hand and murderer; marked by a powder-burn black spot on his cheek.</li>
+        <li>Cowardly and self-pitying; blames everyone but himself; known in Texas by another name (Theron Chelmsford).</li>
+        <li><b>Wants:</b> to survive and evade consequences — a small, mean man, deliberately unworthy of the violence spent on him.</li>
+      </ul>
+    </div>
+
+    <div class="card char">
+      <span class="role">Outlaw leader</span>
+      <span class="name">Lucky Ned Pepper</span>
+      <ul>
+        <li>Leader of the gang Chaney joins; wounded in the lip (his speech is affected).</li>
+        <li>Dangerous but honors a code — he spares Mattie and orders Chaney not to harm her.</li>
+        <li>Delivers the taunt "bold talk for a one-eyed fat man" before Rooster's charge.</li>
+      </ul>
+    </div>
+
+    <div class="card char">
+      <span class="role">Supporting</span>
+      <span class="name">The Fort Smith world</span>
+      <ul>
+        <li><b>Colonel G. Stonehill</b> — livestock trader Mattie outmaneuvers.</li>
+        <li><b>J. Noble Daggett</b> — Mattie's family lawyer, invoked as a recurring threat.</li>
+        <li><b>Yarnell Poindexter</b> — the Ross family's hired man, sent home from Fort Smith.</li>
+        <li><b>Quincy &amp; Moon</b> — young outlaws at the dugout.</li>
+        <li><b>Judge Isaac Parker</b> — the historical "Hanging Judge" presiding over Fort Smith.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>The triangle of motives (memorize this)</h3>
+    <table class="relmap">
+      <tr><td>Mattie → Chaney</td><td>Justice as a paid debt: she wants him <b>hanged in Arkansas</b> for her father. Personal, legal, and religious all at once.</td></tr>
+      <tr><td>LaBoeuf → Chaney</td><td>Profit: he wants him <b>alive to Texas</b> for a senator's-murder reward. This pits him against Mattie's whole purpose.</td></tr>
+      <tr><td>Rooster → Mattie</td><td>Begins transactional (the fee), becomes paternal. Rooster is the hinge between the girl's vengeance and the Ranger's bounty.</td></tr>
+      <tr><td>Ned Pepper → Chaney</td><td>Chaney is a liability inside the gang; Ned's code (sparing Mattie) ironically makes him more honorable than the man he shelters.</td></tr>
+      <tr><td>Mattie ↔ adult world</td><td>Everyone tells her to go home; the engine of the plot is her refusal.</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ================= THEMES ================= -->
+<section class="panel" id="themes">
+  <h2 class="section-h">Themes &amp; Annotated Quotes</h2>
+  <p class="lead">Four load-bearing ideas, each anchored to language. For analysis essays, pair a theme with its quote and the narrative frame.</p>
+
+  <h3>1 · Retributive justice &amp; the economy of debt</h3>
+  <p>Mattie's Calvinist worldview turns the plot into a ledger: crimes are debts, vengeance is collection, and grace is the only thing unpriced. The horse-trade, the marshal's fee, and the blood-debt are the same logic in different currencies.</p>
+  <blockquote class="q">"You must pay for everything in this world one way and another. There is nothing free except the Grace of God."
+    <span class="who">— Mattie, narrating</span>
+    <span class="gloss">The thesis sentence of her morality. Read it forward into the snakebite and the lost arm: she, too, pays.</span>
+  </blockquote>
+
+  <h3>2 · "Grit" — courage, or its harder cousins</h3>
+  <p>The title word is interrogated, not celebrated. Rooster's grit is bravery, stubbornness, and near-savagery at once; Mattie's is faith fused with will. The courtroom scene and the meadow charge ask whether the virtue can be separated from its violence.</p>
+  <blockquote class="q">"Fill your hands, you son of a bitch!"
+    <span class="who">— Rooster Cogburn, charging Ned Pepper's gang</span>
+    <span class="gloss">The mythic image of the book. Note that Portis immediately undercuts heroism: the horse is killed, Rooster is pinned, and a <i>Texan with a rifle</i> actually decides the fight.</span>
+  </blockquote>
+
+  <h3>3 · The retrospective frame &amp; the withheld self</h3>
+  <p>The old narrator never grants herself a moment of stated grief, doubt, or tenderness. Meaning gathers in what she will not say. The same flat diction reports a hanging, a bargain, and her father's body.</p>
+  <blockquote class="q">"People do not give it credence that a fourteen-year-old girl could leave home and go off in the wintertime to avenge her father's blood…"
+    <span class="who">— opening sentence</span>
+    <span class="gloss">The defensiveness ("do not give it credence") signals a narrator arguing with an imagined doubter across decades — the whole book is her brief in her own defense.</span>
+  </blockquote>
+
+  <h3>4 · The cost of vengeance &amp; the revisionist West</h3>
+  <p>Written in 1968, the novel honors the adventure form while charging it a real price. Mattie wins — and ends alone, one-armed, unmarried, wealthy, and unbending. The frontier produces no romance, no community, only a closed account and an old woman's loneliness.</p>
+  <blockquote class="q">"Time just gets away from us."
+    <span class="who">— Mattie, the book's final line</span>
+    <span class="gloss">The flattest possible elegy. After a life organized around collecting a debt, the one thing she cannot bargain with is time. Let students argue whether this is wisdom, denial, or both.</span>
+  </blockquote>
+
+  <div class="card">
+    <h3>Essay prompts (advanced)</h3>
+    <ul>
+      <li>Mattie claims to give a "true account." Build a case that the novel's irony lives in the distance between her <i>accuracy</i> and her <i>self-knowledge</i>.</li>
+      <li>Trace the word "grit" through Rooster, Mattie, LaBoeuf, and Ned Pepper. Is it a virtue, a temperament, or a justification?</li>
+      <li>Read the snakebite-and-amputation as the literalization of "you must pay for everything." What is Mattie paying, and to whom?</li>
+      <li>How does the 1968 publication date shape the novel as a response to — not just an example of — the Western?</li>
+      <li>Argue that Rooster's drunken, transactional heroism is a deliberate demolition of the marshal archetype.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= VOCAB ================= -->
+<section class="panel" id="vocab">
+  <h2 class="section-h">Vocabulary &amp; Historical Context</h2>
+  <p class="lead">Portis's authority comes from period-precise diction. Knowing these terms is half of comprehension; the other half is hearing the formality they create in a teenager's mouth.</p>
+
+  <h3>Period terms &amp; objects</h3>
+  <table class="vocab">
+    <tr><th>Term</th><th>Meaning &amp; significance</th></tr>
+    <tr><td class="term">Colt's dragoon</td><td>The heavy cap-and-ball revolver Mattie carries as her father's gun. Too big for her — its <b>recoil</b> repeatedly knocks her down, and ultimately throws her into the pit. A literal weight of inheritance and vengeance.</td></tr>
+    <tr><td class="term">Sharps (carbine/rifle)</td><td>LaBoeuf's accurate long-range rifle. The instrument of his redemptive long shot that kills Ned Pepper and saves Rooster — competence, not bravado, wins the fight.</td></tr>
+    <tr><td class="term">Deputy U.S. marshal</td><td>Federal lawman with jurisdiction in the Indian Territory (Rooster). Distinct from a <b>Texas Ranger</b> (LaBoeuf), a state officer — the jurisdictional gap drives their rivalry over Chaney.</td></tr>
+    <tr><td class="term">Indian / Choctaw Nation</td><td>The Indian Territory (now Oklahoma), outside ordinary state law, where outlaws fled. The chase's lawless ground.</td></tr>
+    <tr><td class="term">California gold pieces</td><td>The two coins Chaney robs from Frank Ross's body — the petty sum that the whole blood-quest answers, underscoring how small the crime's profit is.</td></tr>
+    <tr><td class="term">Coverlet · coal oil · ague · draught</td><td>A bedspread; kerosene (for lamps); malarial fever/chills; a drink or dose. Everyday 1870s texture that grounds the narration.</td></tr>
+  </table>
+
+  <h3>People, places &amp; allusions</h3>
+  <table class="vocab">
+    <tr><th>Reference</th><th>Why it matters</th></tr>
+    <tr><td class="term">Judge Isaac Parker</td><td>The historical "Hanging Judge" of the Fort Smith federal court — real authority lending the novel documentary weight.</td></tr>
+    <tr><td class="term">Quantrill's guerrillas</td><td>The Confederate irregulars Rooster rode with in the Civil War, explaining his comfort with extralegal violence.</td></tr>
+    <tr><td class="term">Cole Younger &amp; Frank James</td><td>Real outlaws who later toured Wild West shows — Portis places Rooster among them in the epilogue, fusing history and myth and marking how the violent West curdled into entertainment.</td></tr>
+    <tr><td class="term">Cumberland Presbyterian / predestination</td><td>Mattie's denomination and theology. Her belief that events are foreordained and debts must be paid is the spine of her character and the book's moral logic.</td></tr>
+    <tr><td class="term">Dardanelle, Yell County</td><td>Mattie's Arkansas home, repeated almost as an identity badge. The repetition is part of her self-authenticating voice.</td></tr>
+    <tr><td class="term">"True grit"</td><td>Said of Rooster when Mattie asks who has the most of it. The title turns a colloquialism into the novel's central question.</td></tr>
+  </table>
+
+  <div class="note"><b>Voice exercise:</b> Read any Mattie sentence aloud and mark the formal/legal/biblical words a real 14-year-old would not use. That gap — childlike position, lawyerly diction — <i>is</i> Portis's style. Comprehension of <b>True Grit</b> is mostly comprehension of that voice.</div>
+</section>
+
+<!-- ================= QUIZ ================= -->
+<section class="panel" id="quiz">
+  <h2 class="section-h">Self-Test</h2>
+  <p class="lead">Three banks. Pick one, answer, and submit for an instant grade with explanations. "Recall" checks the facts; "Detail" checks careful reading; "Analysis" checks interpretation.</p>
+
+  <div class="quizbar" id="quizbar">
+    <button data-bank="recall" class="active">Plot Recall</button>
+    <button data-bank="detail">Detail &amp; Character</button>
+    <button data-bank="analysis">Analysis &amp; Theme</button>
+  </div>
+
+  <div id="quizMount"></div>
+
+  <div class="quizactions">
+    <button class="btn primary" id="gradeBtn">Grade my answers</button>
+    <button class="btn ghost" id="resetBtn">Reset bank</button>
+  </div>
+
+  <div class="scorebox" id="scorebox">
+    <div class="big" id="scoreNum">0 / 0</div>
+    <div id="scoreMsg"></div>
+    <div class="grit" id="gritMsg"></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  An independent study aid for Charles Portis's <i>True Grit</i> (1968). Built for close reading and comprehension practice — not a substitute for the novel itself. Movement divisions are pedagogical; plot details and quotations follow the 1968 text.
+</footer>
+
+<script>
+/* ---------- Tab switching ---------- */
+const tabs = document.getElementById('tabs');
+tabs.addEventListener('click', e=>{
+  const b = e.target.closest('button'); if(!b) return;
+  document.querySelectorAll('#tabs button').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  document.getElementById(b.dataset.tab).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+
+/* ---------- Quiz data ---------- */
+const BANKS = {
+  recall: [
+    {q:"Why does Mattie Ross travel to Fort Smith at the start of the novel?",
+     opts:["To attend college","To claim her murdered father's body and pursue his killer","To sell the family farm","To visit relatives for the winter"],
+     a:1, e:"Her father, Frank Ross, has been shot and robbed by Tom Chaney. Mattie comes to collect the body and set the manhunt in motion."},
+    {q:"Who killed Frank Ross, and where does he flee?",
+     opts:["Lucky Ned Pepper; to Texas","Tom Chaney; into the Indian Territory","Rooster Cogburn; to Fort Smith","LaBoeuf; to Arkansas"],
+     a:1, e:"Chaney, the hired hand, murders and robs Frank Ross, then flees into the Indian Territory and joins Lucky Ned Pepper's gang."},
+    {q:"Why does Mattie specifically choose to hire Rooster Cogburn?",
+     opts:["He is the cheapest marshal available","He is told to have the most 'true grit' — the most relentlessness","He is a family friend","He already knows where Chaney is hiding"],
+     a:1, e:"Mattie asks which marshal has the most grit; Rooster's reputation for fearless, ruthless determination is exactly what she wants."},
+    {q:"What does the Texas Ranger LaBoeuf want with Tom Chaney?",
+     opts:["To take him alive to Texas for a reward (a murdered state senator)","To kill him for personal revenge","To recruit him as an informant","Nothing — he is hunting Ned Pepper"],
+     a:0, e:"LaBoeuf wants Chaney alive for a Texas bounty, which directly conflicts with Mattie's wish to see him hanged in Arkansas."},
+    {q:"How does Rooster confront Ned Pepper's gang in the meadow?",
+     opts:["He negotiates a surrender","He charges them on horseback, reins in his teeth, a gun in each hand","He ambushes them from cover at night","He waits for army reinforcements"],
+     a:1, e:"The iconic charge: reins in his teeth, revolver and rifle in hand. Ned taunts 'bold talk for a one-eyed fat man'; Rooster answers 'Fill your hands, you son of a bitch!'"},
+    {q:"What finally happens to Mattie's arm?",
+     opts:["It is broken but heals fully","It is amputated after a rattlesnake bite in the pit","It is shot by Chaney","Nothing happens to it"],
+     a:1, e:"Falling into the pit, she breaks her arm and is bitten by a rattlesnake; the venom and delay cost her the arm — it is amputated below the elbow."},
+    {q:"What is Mattie's situation in the epilogue, decades later?",
+     opts:["Married with children on the frontier","An elderly, one-armed, unmarried woman who runs a bank","A traveling Wild West performer","A schoolteacher in Texas"],
+     a:1, e:"The narrator is revealed throughout as an old, one-armed spinster who runs a bank near Dardanelle — the long cost of her quest."},
+    {q:"What does Mattie discover when she goes to find Rooster years later?",
+     opts:["He has become a judge","He has died three days before she arrives","He has moved to California","He refuses to see her"],
+     a:1, e:"Rooster had been touring with a Wild West show (alongside Cole Younger and Frank James); Mattie arrives to find he died three days earlier, and she reburies him in her family plot."}
+  ],
+  detail: [
+    {q:"Whom does Mattie out-negotiate to finance the manhunt?",
+     opts:["Judge Isaac Parker","Colonel G. Stonehill, the livestock trader","Chen Lee, the grocer","Yarnell Poindexter"],
+     a:1, e:"The celebrated horse-trade: Mattie bests Colonel Stonehill, recovering money and her father's horse, and acquiring Little Blackie."},
+    {q:"Whose name does Mattie repeatedly invoke as a legal threat?",
+     opts:["Lawyer J. Noble Daggett","Sheriff Tom Chaney","Marshal Rooster Cogburn","Senator Bibbs"],
+     a:0, e:"She wields her family lawyer, J. Noble Daggett, like a weapon in nearly every negotiation."},
+    {q:"What befalls the two young outlaws, Quincy and Moon, at the dugout?",
+     opts:["They escape into the night","Moon talks, Quincy knifes him, and Rooster kills Quincy","They join Mattie's party","They are arrested and jailed"],
+     a:1, e:"As Moon begins informing, Quincy attacks him to silence him; Rooster kills Quincy, and the dying Moon reveals the gang is coming for horses."},
+    {q:"How is Ned Pepper actually killed?",
+     opts:["Rooster shoots him during the charge","Mattie shoots him with the dragoon","LaBoeuf kills him with a long shot from his Sharps rifle","He escapes and is never killed"],
+     a:2, e:"As Ned moves to finish the pinned Rooster, LaBoeuf makes a remarkable long-range shot, undercutting the lone-hero myth — competence, not Rooster's bravado, settles it."},
+    {q:"What is the fate of Mattie's pony, Little Blackie?",
+     opts:["He survives and she keeps him for life","Rooster rides him to the breaking point and must shoot him","He is stolen by the gang","He throws Mattie into the river"],
+     a:1, e:"To rush the snakebitten Mattie to a doctor, Rooster rides Little Blackie nearly to death and then has to shoot him — another price paid."},
+    {q:"Which detail marks Tom Chaney physically?",
+     opts:["A missing eye","A powder-burn black mark on his cheek","A wounded lip","A wooden leg"],
+     a:1, e:"Chaney is identified by a black powder-burn mark on his face. (The wounded lip belongs to Ned Pepper; the missing eye to Rooster.)"},
+    {q:"How is 'LaBoeuf' pronounced, per Mattie?",
+     opts:["'La-buff'","'La-Beef'","'La-boo'","'Le-bow'"],
+     a:1, e:"Mattie notes the Ranger's name is pronounced 'LaBeef,' part of the book's careful ear for speech and naming."},
+    {q:"Who is the historical 'Hanging Judge' presiding at Fort Smith?",
+     opts:["Judge Isaac Parker","Judge Roy Bean","Colonel Stonehill","J. Noble Daggett"],
+     a:0, e:"Isaac Parker is the real federal judge of the Fort Smith court, lending the novel documentary grounding."}
+  ],
+  analysis: [
+    {q:"What is the single most important fact about the novel's narration?",
+     opts:["It is told by an omniscient narrator","It is narrated retrospectively by an elderly, one-armed Mattie","It alternates between Mattie and Rooster","It is told entirely in dialogue"],
+     a:1, e:"Everything is filtered through the old Mattie's voice. The retrospective frame — and what she refuses to feel — is the book's central literary device."},
+    {q:"Which sentence best captures Mattie's moral economy?",
+     opts:["'Time just gets away from us.'","'You must pay for everything in this world… There is nothing free except the Grace of God.'","'Fill your hands, you son of a bitch!'","'Bold talk for a one-eyed fat man.'"],
+     a:1, e:"Her Calvinist ledger — crimes are debts, vengeance is collection, grace alone is unpriced — organizes the whole plot, including her own punishment."},
+    {q:"How does Portis treat Rooster's heroic meadow charge?",
+     opts:["As an unambiguous triumph of the lone hero","As mythic but immediately undercut — his horse is killed, he is pinned, and LaBoeuf's rifle actually decides it","As a comic failure with no danger","As a dream Mattie imagines"],
+     a:1, e:"The image is iconic, but Portis deflates the lone-gunman myth: bravado nearly gets Rooster killed; a marksman saves him. The Western is honored and questioned at once."},
+    {q:"How does the title word 'grit' function in the novel?",
+     opts:["As simple praise for Rooster","As an interrogated term — courage inseparable from stubbornness and brutality","As a synonym for luck","As irrelevant to the plot"],
+     a:1, e:"From the courtroom to the charge, the book asks whether 'grit' can be separated from the violence it licenses — in Rooster and in Mattie alike."},
+    {q:"What is the thematic point of Mattie losing her arm?",
+     opts:["Random misfortune with no meaning","The literalization of 'you must pay for everything' — vengeance exacts its own price","Proof that Rooster failed her","A punishment for hiring an outlaw"],
+     a:1, e:"The recoil of her father's gun throws her into the pit; her quest's success is inseparable from its cost. She, too, pays."},
+    {q:"Why is the 1968 publication date significant for reading the book?",
+     opts:["It explains the dialect","It positions the novel as a revisionist response to — not just an example of — the Western","It dates the historical events","It has no bearing on interpretation"],
+     a:1, e:"Written amid the era's questioning of American myth, it both honors the frontier adventure and charges it a real, lonely price."},
+    {q:"What does the flat final line, 'Time just gets away from us,' most suggest?",
+     opts:["Mattie has found peace and community","A life organized around collecting a debt against the one thing she can't bargain with — time","That Rooster was never important to her","That the events were imaginary"],
+     a:1, e:"It is a deliberately unadorned elegy: after a lifetime of settling accounts, time is the uncollectable debt. Students can debate whether it reflects wisdom, denial, or both."},
+    {q:"Ned Pepper sparing Mattie while sheltering Chaney produces which effect?",
+     opts:["It proves all outlaws are kind","It makes the outlaw leader appear more honorable than the man he protects — complicating the moral map","It has no thematic weight","It shows Mattie was never in danger"],
+     a:1, e:"Ned's rough code throws Chaney's cowardice into relief and blurs the line between lawman, outlaw, and villain — a hallmark of the book's moral complexity."}
+  ]
+};
+
+const GRIT = [
+  [0.0,"“That is bold talk for one who has not opened the book.” Re-read and try again."],
+  [0.5,"You have the bones of the story but not yet its grit. Another pass will do it."],
+  [0.75,"Solid comprehension. A close reread of the details will carry you the rest of the way."],
+  [0.9,"True grit. You have the story and its meaning well in hand."]
+];
+
+let currentBank = 'recall';
+const mount = document.getElementById('quizMount');
+const scorebox = document.getElementById('scorebox');
+
+function renderBank(name){
+  currentBank = name;
+  scorebox.classList.remove('show');
+  mount.innerHTML = '';
+  BANKS[name].forEach((item, i)=>{
+    const wrap = document.createElement('div');
+    wrap.className = 'qitem';
+    wrap.dataset.idx = i;
+    let optsHtml = '';
+    item.opts.forEach((o, j)=>{
+      const letter = String.fromCharCode(65+j);
+      optsHtml += `<label class="opt" data-opt="${j}">
+        <input type="radio" name="${name}_q${i}" value="${j}">
+        <span class="letter">${letter}.</span><span>${o}</span></label>`;
+    });
+    wrap.innerHTML = `<div class="qnum">Question ${i+1} of ${BANKS[name].length}</div>
+      <div class="qtext">${item.q}</div>
+      <div class="opts">${optsHtml}</div>
+      <div class="explain"></div>`;
+    mount.appendChild(wrap);
+  });
+}
+
+document.getElementById('quizbar').addEventListener('click', e=>{
+  const b = e.target.closest('button'); if(!b) return;
+  document.querySelectorAll('#quizbar button').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  renderBank(b.dataset.bank);
+});
+
+document.getElementById('gradeBtn').addEventListener('click', ()=>{
+  const items = BANKS[currentBank];
+  let score = 0, answered = 0;
+  document.querySelectorAll('#quizMount .qitem').forEach((wrap, i)=>{
+    const item = items[i];
+    const chosen = wrap.querySelector('input:checked');
+    const optEls = wrap.querySelectorAll('.opt');
+    optEls.forEach(o=>o.classList.remove('correct','incorrect'));
+    optEls[item.a].classList.add('correct');
+    const exp = wrap.querySelector('.explain');
+    if(chosen){
+      answered++;
+      const val = parseInt(chosen.value,10);
+      if(val === item.a){ score++; }
+      else { optEls[val].classList.add('incorrect'); }
+    }
+    exp.innerHTML = `<b>${String.fromCharCode(65+item.a)} is correct.</b> ${item.e}`;
+    exp.classList.add('show');
+  });
+  const total = items.length;
+  const pct = score/total;
+  document.getElementById('scoreNum').textContent = `${score} / ${total}`;
+  let msg = answered < total ? `(${total-answered} left blank — counted wrong.) ` : '';
+  document.getElementById('scoreMsg').textContent = msg + `That's ${Math.round(pct*100)}%.`;
+  let line = GRIT[0][1];
+  for(const [thr,txt] of GRIT){ if(pct>=thr) line = txt; }
+  document.getElementById('gritMsg').textContent = line;
+  scorebox.classList.add('show');
+  scorebox.scrollIntoView({behavior:'smooth', block:'center'});
+});
+
+document.getElementById('resetBtn').addEventListener('click', ()=> renderBank(currentBank));
+
+/* init */
+renderBank('recall');
+</script>
+</body>
+</html>
