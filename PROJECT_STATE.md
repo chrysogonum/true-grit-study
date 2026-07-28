@@ -23,7 +23,8 @@ A self-contained interactive HTML comprehension tool for Charles Portis's *True 
 - `DECISIONS.md` — session decisions (repo visibility, landing-page filename, reading level).
 
 ## Live Deployment
-- **URL:** https://chrysogonum.github.io/true-grit-study/
+- **URL:** https://truegrit.ppr3.com — moved 2026-07-28 from
+  `https://chrysogonum.github.io/true-grit-study/`, which now redirects here
 - **Repo:** https://github.com/chrysogonum/true-grit-study (public)
 - **Branch/source:** `main` / root (`/`); Pages build verified HTTP 200.
 

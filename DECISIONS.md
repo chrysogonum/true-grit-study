@@ -11,3 +11,7 @@
 **Reason:** User chose public + clean URL when asked; GitHub Pages on a free account requires a public repo.
 **Impact:** Tool is world-visible and search-indexable at https://chrysogonum.github.io/true-grit-study/. Reversible by disabling Pages or privatizing/deleting the repo.
 **Supersedes:** N/A
+**Address updated 2026-07-28:** the tool now serves at **https://truegrit.ppr3.com**. The
+`chrysogonum.github.io/true-grit-study/` address above redirects there and still works; it is kept
+in this entry because it is what was decided on 2026-06-29. Everything else in the decision — public
+repo, `index.html` at the Pages root — is unchanged.
